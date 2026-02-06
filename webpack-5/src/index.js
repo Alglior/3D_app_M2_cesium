@@ -20,7 +20,7 @@ const viewer = new Viewer("cesiumContainer", {
 
 try {
   const tileset = await Cesium3DTileset.fromUrl(
-    "http://localhost:8080/sortie_cesium/tileset.json"
+    "http://localhost:8080/output_francheville_batie/tileset.json"
   );
   
   viewer.scene.primitives.add(tileset);
