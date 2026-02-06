@@ -4,7 +4,8 @@ import {
   Math,
   Terrain,
   createOsmBuildingsAsync,
-  Cesium3DTileset
+  Cesium3DTileset,
+  Cesium3DTileStyle
 } from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
 import "./css/main.css";
@@ -24,6 +25,24 @@ try {
   );
   
   viewer.scene.primitives.add(tileset);
+
+  // Appliquer un style basé sur USAGE1
+  tileset.style = new Cesium3DTileStyle({
+    color: {
+      conditions: [
+        ["${USAGE1} === 'Résidentiel'", "color('#3498db')"],  // Bleu
+        ["${USAGE1} === 'Industriel'", "color('#e74c3c')"],   // Rouge
+        ["${USAGE1} === 'Commercial'", "color('#f39c12')"],    // Orange
+        ["${USAGE1} === 'Agricole'", "color('#27ae60')"],      // Vert
+        ["${USAGE1} === 'Religieux'", "color('#9b59b6')"],     // Violet
+        ["${USAGE1} === 'Sportif'", "color('#1abc9c')"],       // Turquoise
+        ["${USAGE1} === 'uel'", "color('#e67e22')"],           // Orange foncé
+        ["${USAGE1} === 'Annexe'", "color('#95a5a6')"],        // Gris
+        ["${USAGE1} === null", "color('#bdc3c7')"],            // Gris clair pour valeurs nulles
+        ["true", "color('#ff0000')"]                           // Gris foncé par défaut
+      ]
+    }
+  });
 
   // Pour zoomer automatiquement sur ton modèle une fois chargé
   viewer.zoomTo(tileset);
