@@ -3,7 +3,7 @@
 #    Command line to run this workspace:
 #        "C:\Program Files\FME\fme.exe" C:\Users\niherman\Documents\git_3d\3D_app_M2_cesium\citygml_ogcgeopackage2cesium3dtiles.fmw
 #          --SourceDataset_CITYGML "C:\Users\niherman\Downloads\FRANCHEVILLE_2018\FRANCHEVILLE_2018\FRANCHEVILLE_BATI_2018.gml"
-#          --DestDataset_CESIUM3DTILES "$(FME_MF_DIR_USERTYPED)webpack-5\public\output_francheville_batie"
+#          --DestDataset_CESIUM3DTILES "$(FME_MF_DIR_USERTYPED)webpack-5\public"
 #          --SourceDataset_OGCGEOPACKAGE_3 "C:\Users\niherman\Downloads\bati_francheville.gpkg"
 #          --FME_LAUNCH_VIEWER_APP "YES"
 #    
@@ -32,7 +32,7 @@
 #!   HISTORY=""
 #!   IGNORE_READER_FAILURE="No"
 #!   LAST_SAVE_BUILD="FME(R) 2021.1.0.1 (20210720 - Build 21614 - WIN64)"
-#!   LAST_SAVE_DATE="2026-02-06T15:42:41"
+#!   LAST_SAVE_DATE="2026-02-06T16:01:28"
 #!   LOG_FILE=""
 #!   LOG_MAX_RECORDED_FEATURES="200"
 #!   MARKDOWN_DESCRIPTION=""
@@ -51,7 +51,7 @@
 #!   TITLE=""
 #!   USAGE=""
 #!   USE_MARKDOWN=""
-#!   VIEW_POSITION="-1697.07 820.321"
+#!   VIEW_POSITION="-1697.07 755.216"
 #!   WARN_INVALID_XFORM_PARAM="Yes"
 #!   WORKSPACE_VERSION="1"
 #!   ZOOM_SCALE="72"
@@ -1346,7 +1346,7 @@
 #! <DATASET
 #!   NAME="CESIUM3DTILES_1"
 #!   OVERRIDE="-CESIUM3DTILES_1_DATASET"
-#!   DATASET="CESIUM3DTILES_1/output_francheville_batie"
+#!   DATASET="CESIUM3DTILES_1/public"
 #! />
 #! </WRITER_DATASETS>
 #! </FMESERVER>
@@ -1358,7 +1358,7 @@
 #! />
 #! <GLOBAL_PARAMETER
 #!   GUI_LINE="GUI DIRNAME DestDataset_CESIUM3DTILES Destination Cesium 3D Tiles Folder:"
-#!   DEFAULT_VALUE="$(FME_MF_DIR)webpack-5\public\output_francheville_batie"
+#!   DEFAULT_VALUE="$(FME_MF_DIR)webpack-5\public"
 #!   IS_STAND_ALONE="false"
 #! />
 #! <GLOBAL_PARAMETER
@@ -2356,7 +2356,7 @@ ARCGIS_COMPATIBILITY ARCGIS_AUTO
 GUI IGNORE SourceDataset_CITYGML_1,CITYGML_IN_FME_GROUP_NAMED1_CITYGML_1,CITYGML_IN_USE_CITYGML_SCHEMA_FILES_CITYGML_1,CITYGML_IN_ADE_XSD_DOC_CITYGML_1,CITYGML_IN_VALIDATE_DATASET_CITYGML_1,CITYGML_IN_SKIP_SCHEMA_LOCATION_IN_DATASET_CITYGML_1,CITYGML_IN_ADD_NAMESPACE_PREFIX_TO_FEATURE_TYPES_CITYGML_1,CITYGML_IN_MAX_ATTRIBUTES_PER_NESTED_ATTRIBUTE_CITYGML_1,CITYGML_IN_FME_GROUP_NAMED3_CITYGML_1,CITYGML_IN_USE_XLINK_HREF_GEOMETRY_TRAITS_CITYGML_1,CITYGML_IN_LODS_TO_READ_CITYGML_1,CITYGML_IN_FME_GROUP_NAMED4_CITYGML_1,CITYGML_IN_SRS_AXIS_ORDER_CITYGML_1,CITYGML_IN_TEXTURE_COORDINATES_ORDER_FIX_CITYGML_1,CITYGML_IN_USE_SEARCH_ENVELOPE_CITYGML_1,CITYGML_IN_SEARCH_ENVELOPE_MINX_CITYGML_1,CITYGML_IN_SEARCH_ENVELOPE_MINY_CITYGML_1,CITYGML_IN_SEARCH_ENVELOPE_MAXX_CITYGML_1,CITYGML_IN_SEARCH_ENVELOPE_MAXY_CITYGML_1,CITYGML_IN_SEARCH_ENVELOPE_COORDINATE_SYSTEM_CITYGML_1,CITYGML_IN_CLIP_TO_ENVELOPE_CITYGML_1,CITYGML_IN_NETWORK_AUTHENTICATION_CITYGML_1,SourceDataset_OGCGEOPACKAGE_2,OGCGEOPACKAGE_IN_FME_CONNECTION_GROUP_OGCGEOPACKAGE_2,OGCGEOPACKAGE_IN_ADVANCED_GROUP_OGCGEOPACKAGE_2,OGCGEOPACKAGE_IN_ENFORCE_FOREIGN_KEY_INTEGRITY_OGCGEOPACKAGE_2,OGCGEOPACKAGE_IN_USE_SEARCH_ENVELOPE_OGCGEOPACKAGE_2,OGCGEOPACKAGE_IN_SEARCH_ENVELOPE_MINX_OGCGEOPACKAGE_2,OGCGEOPACKAGE_IN_SEARCH_ENVELOPE_MINY_OGCGEOPACKAGE_2,OGCGEOPACKAGE_IN_SEARCH_ENVELOPE_MAXX_OGCGEOPACKAGE_2,OGCGEOPACKAGE_IN_SEARCH_ENVELOPE_MAXY_OGCGEOPACKAGE_2,OGCGEOPACKAGE_IN_SEARCH_ENVELOPE_COORDINATE_SYSTEM_OGCGEOPACKAGE_2,OGCGEOPACKAGE_IN_CLIP_TO_ENVELOPE_OGCGEOPACKAGE_2,OGCGEOPACKAGE_IN_NETWORK_AUTHENTICATION_OGCGEOPACKAGE_2,DestDataset_CESIUM3DTILES_1,CESIUM3DTILES_OUT_WRITER_PARAMS_CESIUM3DTILES_1,CESIUM3DTILES_OUT_MAX_FEATURES_PER_TILE_CESIUM3DTILES_1
 # ============================================================================
 DEFAULT_MACRO SourceDataset_CITYGML C:\Users\niherman\Downloads\FRANCHEVILLE_2018\FRANCHEVILLE_2018\FRANCHEVILLE_BATI_2018.gml
-DEFAULT_MACRO DestDataset_CESIUM3DTILES $(FME_MF_DIR)webpack-5\public\output_francheville_batie
+DEFAULT_MACRO DestDataset_CESIUM3DTILES $(FME_MF_DIR)webpack-5\public
 DEFAULT_MACRO SourceDataset_OGCGEOPACKAGE_3 C:\Users\niherman\Downloads\bati_francheville.gpkg
 # ============================================================================
 GUI MULTIFILE SourceDataset_CITYGML CityGML_Files(*.gml;*.xml;*.gz)|*.gml;*.xml;*.gz|CityGML_Files(*.gml)|*.gml|CityGML_Files(*.xml)|*.xml|Compressed_CityGML_Files(*.gz)|*.gz|Compressed_Files(*.bz2;*.gz)|*.bz2;*.gz|Archive_Files(*.7z;*.7zip;*.rar;*.rvz;*.tar;*.tar.bz2;*.tar.gz;*.tgz;*.zip;*.zipx)|*.7z;*.7zip;*.rar;*.rvz;*.tar;*.tar.bz2;*.tar.gz;*.tgz;*.zip;*.zipx|All_Files|* Source CityGML File(s):
@@ -2689,31 +2689,31 @@ CITYGML_1_MERGE_DEF CITYGML_1::WallSurface EXACT WallSurface
 OGCGEOPACKAGE_2_MERGE_DEF OGCGEOPACKAGE_2::batiment EXACT batiment DEFLINE geopackage_type,geopackage_multipolygon,geopackage_where_clause,,fme_attribute_reading,defined,ID,text<openparen>24<closeparen>,NATURE,text<openparen>34<closeparen>,USAGE1,text<openparen>22<closeparen>,USAGE2,text<openparen>22<closeparen>,LEGER,text<openparen>3<closeparen>,ETAT,text<openparen>15<closeparen>,DATE_CREAT,text<openparen>19<closeparen>,DATE_MAJ,text<openparen>19<closeparen>,DATE_APP,date,DATE_CONF,date,SOURCE,text<openparen>127<closeparen>,ID_SOURCE,text<openparen>254<closeparen>,ACQU_PLANI,text<openparen>32<closeparen>,ACQU_ALTI,text<openparen>30<closeparen>,PREC_PLANI,double,PREC_ALTI,double,NB_LOGTS,mediumint,NB_ETAGES,mediumint,MAT_MURS,text<openparen>2<closeparen>,MAT_TOITS,text<openparen>2<closeparen>,HAUTEUR,double,Z_MIN_SOL,double,Z_MIN_TOIT,double,Z_MAX_TOIT,double,Z_MAX_SOL,double,ORIGIN_BAT,text<openparen>18<closeparen>,APP_FF,text<openparen>32<closeparen>,IDS_RNB,text<openparen>254<closeparen>,fid,int<comma>PrimaryKey
 # -------------------------------------------------------------------------
 
-FACTORY_DEF * TeeFactory    FACTORY_NAME "WallSurface_CITYGML_1 Splitter"    INPUT FEATURE_TYPE WallSurface    OUTPUT FEATURE_TYPE WallSurface_CITYGML_1    OUTPUT FEATURE_TYPE WallSurface_CITYGML_1
+FACTORY_DEF * TeeFactory    FACTORY_NAME "WallSurface_CITYGML_1 Splitter"    INPUT FEATURE_TYPE WallSurface    OUTPUT FEATURE_TYPE WallSurface_CITYGML_1_0_xEwvEOaXjwc=    OUTPUT FEATURE_TYPE WallSurface_CITYGML_1_1_zIRSPhPtdSQ=
 # -------------------------------------------------------------------------
 
-FACTORY_DEF * TeeFactory    FACTORY_NAME "RoofSurface_CITYGML_1 Splitter"    INPUT FEATURE_TYPE RoofSurface    OUTPUT FEATURE_TYPE RoofSurface_CITYGML_1    OUTPUT FEATURE_TYPE RoofSurface_CITYGML_1
+FACTORY_DEF * TeeFactory    FACTORY_NAME "RoofSurface_CITYGML_1 Splitter"    INPUT FEATURE_TYPE RoofSurface    OUTPUT FEATURE_TYPE RoofSurface_CITYGML_1_0_qrdnhAi0OD0=    OUTPUT FEATURE_TYPE RoofSurface_CITYGML_1_1_dfBXFOolL0s=
 # -------------------------------------------------------------------------
 
-FACTORY_DEF * TeeFactory    FACTORY_NAME "GroundSurface_CITYGML_1 Splitter"    INPUT FEATURE_TYPE GroundSurface    OUTPUT FEATURE_TYPE GroundSurface_CITYGML_1    OUTPUT FEATURE_TYPE GroundSurface_CITYGML_1
+FACTORY_DEF * TeeFactory    FACTORY_NAME "GroundSurface_CITYGML_1 Splitter"    INPUT FEATURE_TYPE GroundSurface    OUTPUT FEATURE_TYPE GroundSurface_CITYGML_1_0_7zWK7lJsLAk=    OUTPUT FEATURE_TYPE GroundSurface_CITYGML_1_1_DCGzjXHUorQ=
 # -------------------------------------------------------------------------
 
 FACTORY_DEF * TeeFactory    FACTORY_NAME "batiment_OGCGEOPACKAGE_2 Splitter"    INPUT FEATURE_TYPE batiment    OUTPUT FEATURE_TYPE batiment_OGCGEOPACKAGE_2
 DEFAULT_MACRO WB_CURRENT_CONTEXT
 # -------------------------------------------------------------------------
-FACTORY_DEF {*} TeeFactory    FACTORY_NAME { Reprojector }    INPUT  FEATURE_TYPE batiment_OGCGEOPACKAGE_2
+FACTORY_DEF {*} TeeFactory    FACTORY_NAME { Reprojector }    INPUT  FEATURE_TYPE batiment_OGCGEOPACKAGE_2    OUTPUT { FEATURE_TYPE Reprojector_REPROJECTED         @Reproject("","EPSG:3946",NearestNeighbor,PreserveCells,Reprojector,"COORD_SYS_WARNING",RASTER_TOLERANCE,0.0)          }
 # -------------------------------------------------------------------------
-FACTORY_DEF {*} TeeFactory    FACTORY_NAME { 2DForcer_2 }    INPUT  FEATURE_TYPE WallSurface_CITYGML_1    INPUT  FEATURE_TYPE RoofSurface_CITYGML_1    INPUT  FEATURE_TYPE GroundSurface_CITYGML_1
+FACTORY_DEF {*} TeeFactory    FACTORY_NAME { 2DForcer_2 }    INPUT  FEATURE_TYPE WallSurface_CITYGML_1_0_xEwvEOaXjwc=    INPUT  FEATURE_TYPE RoofSurface_CITYGML_1_0_qrdnhAi0OD0=    INPUT  FEATURE_TYPE GroundSurface_CITYGML_1_0_7zWK7lJsLAk=    OUTPUT { FEATURE_TYPE 2DForcer_2_2D         @Dimension(2)          }
 # -------------------------------------------------------------------------
-FACTORY_DEF {*} SpatialFilterFactory    FACTORY_NAME { SpatialFilter }    COMMAND_PARM_EVALUATION SINGLE_PASS    INPUT BASE FEATURE_TYPE Reprojector_REPROJECTED    INPUT CANDIDATE FEATURE_TYPE 2DForcer_2_2D    FEATURE_TABLE_SHIM_SUPPORT Yes    PRESERVE_FEATURE_ORDER { PER_OUTPUT_PORT }    PREDICATE { "INTERSECTS" }    USE_BOUNDING_BOX { YES }    MULTIPLE_BASES { YES }    MERGE_BASE_ATTR { YES }    ATTR_ACCUM_MODE { "HANDLE_CONFLICT" }    ATTR_CONFLICT_RES { "CANDIDATE_IF_CONFLICT" }    BASE_ATTR_PREFIX { "<Unused>" }    PREDICATE_ATTR { "_predicate" }    BOOLEAN_OPERATOR { OR }    REJECT_INVALID_GEOM Yes    REJECT_INVALID_PREDICATES Yes    REJECT_RASTERS No    ALLOW_NULLS Yes    CUSTOM_MULTI_HANDLING { Yes }    DIMENSION 2    FLUSH_WHEN_GROUPS_CHANGE { <Unused>  }    CURVE_BOUNDARY_RULE { ENDPOINTS_MOD2 }    OUTPUT { REJECTED FEATURE_TYPE SpatialFilter_<REJECTED>         }
+FACTORY_DEF {*} SpatialFilterFactory    FACTORY_NAME { SpatialFilter }    COMMAND_PARM_EVALUATION SINGLE_PASS    INPUT BASE FEATURE_TYPE Reprojector_REPROJECTED    INPUT CANDIDATE FEATURE_TYPE 2DForcer_2_2D    FEATURE_TABLE_SHIM_SUPPORT Yes    PRESERVE_FEATURE_ORDER { PER_OUTPUT_PORT }    PREDICATE { "INTERSECTS" }    USE_BOUNDING_BOX { YES }    MULTIPLE_BASES { YES }    MERGE_BASE_ATTR { YES }    ATTR_ACCUM_MODE { "HANDLE_CONFLICT" }    ATTR_CONFLICT_RES { "CANDIDATE_IF_CONFLICT" }    BASE_ATTR_PREFIX { "<Unused>" }    PREDICATE_ATTR { "_predicate" }    BOOLEAN_OPERATOR { OR }    REJECT_INVALID_GEOM Yes    REJECT_INVALID_PREDICATES Yes    REJECT_RASTERS No    ALLOW_NULLS Yes    CUSTOM_MULTI_HANDLING { Yes }    DIMENSION 2    FLUSH_WHEN_GROUPS_CHANGE { <Unused>  }    CURVE_BOUNDARY_RULE { ENDPOINTS_MOD2 }    OUTPUT { PASSED FEATURE_TYPE SpatialFilter_PASSED         }    OUTPUT { REJECTED FEATURE_TYPE SpatialFilter_<REJECTED>         }
 DEFAULT_MACRO _WB_BYPASS_TERMINATION No
 FACTORY_DEF * TeeFactory FACTORY_NAME SpatialFilter_<Rejected> INPUT FEATURE_TYPE SpatialFilter_<REJECTED>  OUTPUT FAILED FEATURE_TYPE * @Abort(ENCODED, SpatialFilter<space>output<space>a<space><lt>Rejected<gt><space>feature.<space><space>To<space>continue<space>translation<space>when<space>features<space>are<space>rejected<comma><space>change<space><apos>Workspace<space>Parameters<apos><space><gt><space>Translation<space><gt><space><apos>Rejected<space>Feature<space>Handling<apos><space>to<space><apos>Continue<space>Translation<apos>)
 # -------------------------------------------------------------------------
-FACTORY_DEF {*} FeatureJoinerFactory    FACTORY_NAME { FeatureJoiner }    FLUSH_WHEN_GROUPS_CHANGE { <Unused> }    INPUT LEFT FEATURE_TYPE SpatialFilter_PASSED    INPUT RIGHT FEATURE_TYPE WallSurface_CITYGML_1    INPUT RIGHT FEATURE_TYPE RoofSurface_CITYGML_1    INPUT RIGHT FEATURE_TYPE GroundSurface_CITYGML_1    JOIN_MODE { Inner }    JOIN_KEYS { gml_id gml_id AUTO }    ATTR_CONFLICT_RES { USE_LEFT }    GEOMETRY_HANDLING { USE_RIGHT }    OUTPUT { <REJECTED> FEATURE_TYPE FeatureJoiner_<REJECTED>        }
+FACTORY_DEF {*} FeatureJoinerFactory    FACTORY_NAME { FeatureJoiner }    FLUSH_WHEN_GROUPS_CHANGE { <Unused> }    INPUT LEFT FEATURE_TYPE SpatialFilter_PASSED    INPUT RIGHT FEATURE_TYPE WallSurface_CITYGML_1_1_zIRSPhPtdSQ=    INPUT RIGHT FEATURE_TYPE RoofSurface_CITYGML_1_1_dfBXFOolL0s=    INPUT RIGHT FEATURE_TYPE GroundSurface_CITYGML_1_1_DCGzjXHUorQ=    JOIN_MODE { Inner }    JOIN_KEYS { gml_id gml_id AUTO }    ATTR_CONFLICT_RES { USE_LEFT }    GEOMETRY_HANDLING { USE_RIGHT }    OUTPUT { JOINED FEATURE_TYPE FeatureJoiner_JOINED        }    OUTPUT { UNJOINED_RIGHT FEATURE_TYPE FeatureJoiner_UNJOINED_RIGHT        }    OUTPUT { <REJECTED> FEATURE_TYPE FeatureJoiner_<REJECTED>        }
 DEFAULT_MACRO _WB_BYPASS_TERMINATION No
 FACTORY_DEF * TeeFactory FACTORY_NAME FeatureJoiner_<Rejected> INPUT FEATURE_TYPE FeatureJoiner_<REJECTED>  OUTPUT FAILED FEATURE_TYPE * @Abort(ENCODED, FeatureJoiner<space>output<space>a<space><lt>Rejected<gt><space>feature.<space><space>To<space>continue<space>translation<space>when<space>features<space>are<space>rejected<comma><space>change<space><apos>Workspace<space>Parameters<apos><space><gt><space>Translation<space><gt><space><apos>Rejected<space>Feature<space>Handling<apos><space>to<space><apos>Continue<space>Translation<apos>)
 # -------------------------------------------------------------------------
-FACTORY_DEF {*} GQueryFactory    FACTORY_NAME { AppearanceRemover }    INPUT  FEATURE_TYPE FeatureJoiner_JOINED    INPUT  FEATURE_TYPE FeatureJoiner_UNJOINED_RIGHT    ROUTE_UNMATCHED_FEATURES YES    ACTION REMOVE_APPEARANCE    PARAMETER { BOTH }    OUTPUT { UNTOUCHED FEATURE_TYPE AppearanceRemover_<REJECTED>       fme_rejection_code MISSING_GEOMETRY_APPEARANCE        }
+FACTORY_DEF {*} GQueryFactory    FACTORY_NAME { AppearanceRemover }    INPUT  FEATURE_TYPE FeatureJoiner_JOINED    INPUT  FEATURE_TYPE FeatureJoiner_UNJOINED_RIGHT    ROUTE_UNMATCHED_FEATURES YES    ACTION REMOVE_APPEARANCE    PARAMETER { BOTH }    OUTPUT { UNTOUCHED FEATURE_TYPE AppearanceRemover_<REJECTED>       fme_rejection_code MISSING_GEOMETRY_APPEARANCE        }    OUTPUT { RESULT FEATURE_TYPE AppearanceRemover_OUTPUT  }
 DEFAULT_MACRO _WB_BYPASS_TERMINATION No
 FACTORY_DEF * TeeFactory FACTORY_NAME AppearanceRemover_<Rejected> INPUT FEATURE_TYPE AppearanceRemover_<REJECTED>  OUTPUT FAILED FEATURE_TYPE * @Abort(ENCODED, AppearanceRemover<space>output<space>a<space><lt>Rejected<gt><space>feature.<space><space>To<space>continue<space>translation<space>when<space>features<space>are<space>rejected<comma><space>change<space><apos>Workspace<space>Parameters<apos><space><gt><space>Translation<space><gt><space><apos>Rejected<space>Feature<space>Handling<apos><space>to<space><apos>Continue<space>Translation<apos>)
 # -------------------------------------------------------------------------
