@@ -15,7 +15,7 @@ import "./css/main.css";
 
 // Initialize the Cesium Viewer in the HTML element with the `cesiumContainer` ID.
 const viewer = new Viewer("cesiumContainer", {
-  terrain: undefined,//Terrain.fromWorldTerrain(),
+  terrain: Terrain.fromWorldTerrain(),
 });
 
 try {
