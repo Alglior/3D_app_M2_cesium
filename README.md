@@ -53,6 +53,16 @@ Ajustement de l'altitude des bâtiments si nécessaire pour garantir un position
 #### 7. **Export en 3D Tiles**
 Les données sont finalement exportées au format Cesium 3D Tiles (65661 features) pour une visualisation optimisée dans CesiumJS.
 
+### Workflow QGIS - Traitement des Routes
+
+La couche de routes provient de la BD TOPO : **GNF_BDTOPO_3-5_SHP_LAMB93_D069-ED2025-12-15**.
+
+Le traitement a ete realise dans QGIS avec les etapes suivantes :
+
+1. **Selection de la couche routes** depuis la BD TOPO.
+2. **Intersection** avec les limites communales de Francheville.
+3. **Export** du resultat en **GeoJSON** en 4326 pour integration dans CesiumJS.
+
 ## Représentation du Bâti sur la Carte
 
 ### Choix de Colorisation
@@ -136,6 +146,7 @@ webpack-5/
 │   ├── francheville_comm.geojson          # Limites communales
 │   └── output_francheville_batie/         # Tuiles 3D du bâti
 │       ├── tileset.json                   # Index des tuiles
+│       ├── routes_bdtopo_francheville2.geojson  # Routes (BD TOPO, QGIS -> GeoJSON)
 │       └── data/                          # Fichiers .b3dm
 ├── src/
 │   ├── index.html                         # Page HTML principale
