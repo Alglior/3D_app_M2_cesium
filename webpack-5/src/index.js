@@ -5,7 +5,12 @@ import {
   Terrain,
   createOsmBuildingsAsync,
   Cesium3DTileset,
-  Cesium3DTileStyle
+  Cesium3DTileStyle,
+  GeoJsonDataSource,
+  Color,
+  PolylinePipeline,
+  ArcType,
+  PolylineGlowMaterialProperty
 } from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
 import "./css/main.css";
@@ -19,10 +24,81 @@ const viewer = new Viewer("cesiumContainer", {
   terrain: Terrain.fromWorldTerrain(),
 });
 
+viewer.scene.globe.depthTestAgainstTerrain = true;
+
+const baseUrl = new URL("/", window.location.href);
+const tilesetUrl = new URL(
+  "output_francheville_batie/tileset.json",
+  baseUrl
+).toString();
+const routesUrl = new URL(
+  "output_francheville_batie/routes_bdtopo_francheville2.geojson",
+  baseUrl
+).toString();
+
+let routes;
+const routeNatureColors = {
+  "Chemin": "#27ae60",
+  "Escalier": "#8e44ad",
+  "Rond-point": "#e67e22",
+  "Route empierrée": "#95a5a6",
+  "Route à 1 chaussée": "#3498db",
+  "Route à 2 chaussées": "#e74c3c",
+  "Sentier": "#16a085"
+};
+const defaultRouteColor = "#f1c40f";
+
+const getEntityValue = (entity, key) => {
+  const value = entity?.properties?.[key]?.getValue?.(viewer.clock.currentTime);
+  return typeof value === "string" ? value.trim() : value;
+};
+
+const applyRouteStyles = (dataSource, options) => {
+  if (!dataSource) {
+    return;
+  }
+
+  const { useNatureColors, useUrbainStyle } = options;
+
+  dataSource.entities.values.forEach((entity) => {
+    if (!entity.polyline) {
+      return;
+    }
+
+    const positions = entity.polyline.positions?.getValue(
+      viewer.clock.currentTime
+    );
+    if (positions && positions.length > 1) {
+      const densifiedPositions = PolylinePipeline.generateArc({
+        positions,
+        granularity: Math.toRadians(0.0005),
+        arcType: ArcType.GEODESIC
+      });
+      entity.polyline.positions = Cartesian3.unpackArray(densifiedPositions);
+    }
+
+    const natureValue = getEntityValue(entity, "NATURE");
+    const urbainValue = getEntityValue(entity, "URBAIN");
+    const natureColor = routeNatureColors[natureValue] || defaultRouteColor;
+    const selectedColor = useNatureColors ? natureColor : defaultRouteColor;
+    const color = Color.fromCssColorString(selectedColor);
+
+    if (useUrbainStyle && urbainValue === "OUI") {
+      entity.polyline.width = 3;
+      entity.polyline.material = new PolylineGlowMaterialProperty({
+        color,
+        glowPower: 0.15
+      });
+    } else {
+      entity.polyline.width = 2;
+      entity.polyline.material = color;
+    }
+    entity.polyline.clampToGround = true;
+  });
+};
+
 try {
-  const tileset = await Cesium3DTileset.fromUrl(
-    "http://localhost:8080/output_francheville_batie/tileset.json"
-  );
+  const tileset = await Cesium3DTileset.fromUrl(tilesetUrl);
   
   viewer.scene.primitives.add(tileset);
 
@@ -46,8 +122,54 @@ try {
 
   // Pour zoomer automatiquement sur ton modèle une fois chargé
   viewer.zoomTo(tileset);
+
 } catch (error) {
   console.log(`Erreur lors du chargement du tileset: ${error}`);
+}
+
+try {
+  const routesResponse = await fetch(routesUrl);
+  const routesGeojson = await routesResponse.json();
+  routes = await GeoJsonDataSource.load(routesGeojson, {
+    clampToGround: true
+  });
+
+  viewer.dataSources.add(routes);
+
+  const routeStyleOptions = {
+    useNatureColors: true,
+    useUrbainStyle: true
+  };
+
+  applyRouteStyles(routes, routeStyleOptions);
+
+  const toggleRoutes = document.getElementById("toggleRoutes");
+  const toggleRoutesUrbain = document.getElementById("toggleRoutesUrbain");
+  const toggleRoutesNature = document.getElementById("toggleRoutesNature");
+  if (toggleRoutes) {
+    toggleRoutes.checked = true;
+    toggleRoutes.addEventListener("change", (event) => {
+      routes.show = event.target.checked;
+    });
+  }
+
+  if (toggleRoutesUrbain) {
+    toggleRoutesUrbain.checked = routeStyleOptions.useUrbainStyle;
+    toggleRoutesUrbain.addEventListener("change", (event) => {
+      routeStyleOptions.useUrbainStyle = event.target.checked;
+      applyRouteStyles(routes, routeStyleOptions);
+    });
+  }
+
+  if (toggleRoutesNature) {
+    toggleRoutesNature.checked = routeStyleOptions.useNatureColors;
+    toggleRoutesNature.addEventListener("change", (event) => {
+      routeStyleOptions.useNatureColors = event.target.checked;
+      applyRouteStyles(routes, routeStyleOptions);
+    });
+  }
+} catch (error) {
+  console.log(`Erreur lors du chargement des routes: ${error}`);
 }
 // // Fly the camera to San Francisco at the given longitude, latitude, and height.
 // viewer.camera.flyTo({

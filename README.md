@@ -1,125 +1,171 @@
-# cesium-webpack-example
+# Application 3D de Visualisation du Bâti - Francheville
 
-A minimal recommended setup for an applications using [Cesium](https://cesium.com) with [Webpack](https://webpack.js.org/).
+## Description du Projet
 
-Jump to the [Webpack 5](./webpack-5/) directory for the most up to date example. We also provide a [Webpack 4](./webpack-4/) example if you are still on the older version.
+Cette application web interactive permet de visualiser en 3D le bâti de la commune de Francheville à l'aide de CesiumJS. Les données sont présentées sous forme de tuiles 3D (3D Tiles) au format Cesium avec une colorisation thématique basée sur l'usage des bâtiments.
 
-## Running this application
+## Objectifs
 
-Please switch to the corresponding sub-directory for the version of Webpack you're using to see how to run this example application
+- Visualiser le bâti en 3D sur un globe virtuel
+- Différencier visuellement les bâtiments selon leur usage
+- Offrir une interface interactive pour explorer les données urbaines
+- Fournir une légende claire pour faciliter la lecture de la carte
 
-- [Webpack 4 commands](./webpack-4/README.md#running-this-application)
-- [Webpack 5 commands](./webpack-5/README.md#running-this-application)
+## Méthodologie de Traitement des Données
 
-## Requiring Cesium in your application
+### Workflow FME - Traitement du Bâti
 
-Regardless which version of Webpack you're using you should be able to use CesiumJS in the same way.
+![Workflow FME](script_FME.png)
 
-We recommend [importing named exports](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) from the Cesium ES module, via the `import` keyword. This allows webpack to [tree shake](https://webpack.js.org/guides/tree-shaking/) your application automatically.
+Le traitement des données du bâti s'effectue en plusieurs étapes via FME (Feature Manipulation Engine) :
 
-### Import named modules from Cesium
+#### 1. **Extraction des Surfaces**
+- **RoofSurface** : Extraction des surfaces de toit (3255 features)
+- **GroundSurface** : Extraction des surfaces au sol (1058 features)
+- **WallSurface** : Extraction des murs (4 features)
 
-```js
-import { Color } from "cesium";
-var c = Color.fromRandom();
+Ces surfaces proviennent de modèles CityGML qui décrivent la géométrie 3D des bâtiments.
+
+#### 2. **Reprojection**
+Les données sont reprojetées dans le système de coordonnées approprié pour assurer la cohérence spatiale avec le globe Cesium.
+
+#### 3. **Jointure Spatiale (SpatialFilter)**
+Un filtre spatial permet d'associer les surfaces de bâtiments avec les données attributaires du bâti (6250 features en entrée, 6365 features après traitement). Cette étape permet de :
+- Identifier les bâtiments présents dans la zone d'étude
+- Filtrer les données selon des critères géographiques
+- Séparer les features acceptées, rejetées et en attente
+
+#### 4. **FeatureJoiner**
+Cette étape cruciale joint les géométries 3D avec les attributs sémantiques des bâtiments, notamment :
+- **USAGE1** : Usage principal du bâtiment (Résidentiel, Commercial, Industriel, etc.)
+- Autres attributs métier
+
+Le joineur produit :
+- **Joined** : Bâtiments avec attributs associés (69296 features)
+- **Unjoined** : Entités non appariées (5365 features)
+
+#### 5. **AppearanceRemover**
+Suppression des apparences d'origine des modèles CityGML pour permettre une stylisation personnalisée basée sur les attributs.
+
+#### 6. **Offsetter**
+Ajustement de l'altitude des bâtiments si nécessaire pour garantir un positionnement correct sur le terrain.
+
+#### 7. **Export en 3D Tiles**
+Les données sont finalement exportées au format Cesium 3D Tiles (65661 features) pour une visualisation optimisée dans CesiumJS.
+
+## Représentation du Bâti sur la Carte
+
+### Choix de Colorisation
+
+Nous avons choisi de représenter les bâtiments avec une **colorisation thématique basée sur l'attribut USAGE1**. Ce choix offre plusieurs avantages :
+
+#### Pourquoi cette représentation ?
+
+1. **Lisibilité Urbaine** : Les différentes couleurs permettent d'identifier instantanément la fonction d'un quartier (résidentiel, commercial, industriel).
+
+2. **Analyse Spatiale** : Cette visualisation facilite l'analyse de la répartition des usages sur le territoire :
+   - Identification des zones monofonctionnelles
+   - Détection des zones mixtes
+   - Compréhension de l'organisation urbaine
+
+3. **Communication** : La carte devient un outil de communication efficace pour :
+   - Les urbanistes et aménageurs
+   - Les élus municipaux
+   - Le grand public
+
+4. **Différenciation Visuelle** : Chaque usage dispose d'une couleur distinctive :
+   - 🔵 **Résidentiel** (#3498db) - Bleu : zones d'habitation
+   - 🔴 **Industriel** (#e74c3c) - Rouge : sites de production
+   - 🟠 **Commercial** (#f39c12) - Orange : commerces et services
+   - 🟢 **Agricole** (#27ae60) - Vert : bâtiments agricoles
+   - 🟣 **Religieux** (#9b59b6) - Violet : édifices religieux
+   - 🔷 **Sportif** (#1abc9c) - Turquoise : équipements sportifs
+   - ⚪ **Annexe** (#95a5a6) - Gris : dépendances
+   - ⚫ **Non défini** (#bdc3c7) - Gris clair : usage inconnu
+
+### Code de Stylisation (Cesium3DTileStyle)
+
+```javascript
+tileset.style = new Cesium3DTileStyle({
+  color: {
+    conditions: [
+      ["${USAGE1} === 'Résidentiel'", "color('#3498db')"],
+      ["${USAGE1} === 'Industriel'", "color('#e74c3c')"],
+      ["${USAGE1} === 'Commercial'", "color('#f39c12')"],
+      ["${USAGE1} === 'Agricole'", "color('#27ae60')"],
+      ["${USAGE1} === 'Religieux'", "color('#9b59b6')"],
+      ["${USAGE1} === 'Sportif'", "color('#1abc9c')"],
+      ["${USAGE1} === 'Annexe'", "color('#95a5a6')"],
+      ["${USAGE1} === null", "color('#bdc3c7')"],
+      ["true", "color('#ff0000')"]
+    ]
+  }
+});
 ```
 
-### Import Cesium static asset files
+Cette approche par conditions permet une grande flexibilité et peut être facilement adaptée pour d'autres critères de visualisation (hauteur, année de construction, état du bâti, etc.).
 
-```js
-import "cesium/Build/Cesium/Widgets/widgets.css";
+## Installation
+
+### Prérequis
+- Node.js (version 16 ou supérieure)
+- npm ou yarn
+
+### Installation des dépendances
+
+```bash
+cd webpack-5
+npm install
 ```
 
-## Cesium sub-packages
+## Lancement de l'Application
 
-CesiumJS requires a few static files to be hosted on your server, like web workers and SVG icons. These examples are set up to copy these directories already if you install the whole `cesium` package.
+### Démarrer le serveur de développement
 
-```js
-new CopyWebpackPlugin({
-  patterns: [
-    { from: path.join(cesiumSource, "Workers"), to: `${cesiumBaseUrl}/Workers`, },
-    { from: path.join(cesiumSource, "ThirdParty"), to: `${cesiumBaseUrl}/ThirdParty`, },
-    { from: path.join(cesiumSource, "Assets"), to: `${cesiumBaseUrl}/Assets`, },
-    { from: path.join(cesiumSource, "Widgets"), to: `${cesiumBaseUrl}/Widgets`, },
-  ],
-}),
+```bash
+npm start
 ```
 
-However if you only install `@cesium/engine` then you should change the paths in `webpack.config.js` to the ones below:
+L'application sera accessible à l'adresse : `http://localhost:8080`
 
-```js
-new CopyWebpackPlugin({
-  patterns: [
-    { from: 'node_modules/@cesium/engine/Build/Workers', to: `${cesiumBaseUrl}/Workers` },
-    { from: 'node_modules/@cesium/engine/Build/ThirdParty', to: `${cesiumBaseUrl}/ThirdParty` },
-    { from: 'node_modules/@cesium/engine/Source/Assets', to: `${cesiumBaseUrl}/Assets` },
-  ],
-}),
+## Structure du Projet
+
+```
+webpack-5/
+├── public/
+│   ├── francheville_comm.geojson          # Limites communales
+│   └── output_francheville_batie/         # Tuiles 3D du bâti
+│       ├── tileset.json                   # Index des tuiles
+│       └── data/                          # Fichiers .b3dm
+├── src/
+│   ├── index.html                         # Page HTML principale
+│   ├── index.js                           # Code JavaScript Cesium
+│   └── css/
+│       └── main.css                       # Styles CSS
+├── package.json                           # Dépendances npm
+└── webpack.config.js                      # Configuration Webpack
 ```
 
-Additionally you will have to import a different widgets css file in `src/index.js`.
+## Technologies Utilisées
 
-```js
-// Change this import
-import "cesium/Build/Cesium/Widgets/widgets.css";
+- **CesiumJS** : Bibliothèque de visualisation 3D géospatiale
+- **Webpack** : Bundler de modules JavaScript
+- **FME** : Outil de transformation de données géospatiales
+- **3D Tiles** : Format de tuiles 3D pour la visualisation performante
 
-// To this one from the cesium/engine package
-import "@cesium/engine/Source/Widget/CesiumWidget.css";
-```
+## Données Source
 
-## Removing pragmas
+- Format d'origine : CityGML
+- Système de coordonnées : [À préciser]
+- Couverture : Commune de Francheville
+- Attributs : USAGE1, géométries 3D (toits, murs, sols)
 
-To remove pragmas such as a traditional Cesium release build, use the [`strip-pragma-loader`](https://www.npmjs.com/package/strip-pragma-loader).
+## Auteurs
 
-Install the plugin with npm,
-
-```sh
-npm install strip-pragma-loader --save-dev
-```
-
-and include the loader in `module.rules` with `debug` set to `false`.
-
-```js
-rules: [
-  {
-    test: /\.js$/,
-    enforce: "pre",
-    include: path.resolve(__dirname, cesiumSource),
-    use: [
-      {
-        loader: "strip-pragma-loader",
-        options: {
-          pragmas: {
-            debug: false,
-          },
-        },
-      },
-    ],
-  },
-];
-```
-
-## Contributions
-
-Pull requests are appreciated. Please use the same [Contributor License Agreement (CLA)](https://github.com/CesiumGS/cesium/blob/master/CONTRIBUTING.md) used for [Cesium](https://cesium.com/).
-
-Even though this project has nested package.json projects we are not using `npm` workspaces to preserve a more "stand-alone" nature for each example. This allows other developers to copy the sub-directory and use it as-is for a new project.
-
-Make sure you run `npm install` in the root directory to set up linting and git commit hooks
-
-### Available scripts
-
-The top level scripts in the root directory are mostly for development of this repo itself:
-
-- `npm run eslint`, `npm run prettier`, `npm run prettier-check` - Lint this project to maintain code style
-
-There are also some shortcuts to run the code for each Webpack version. These are just for convenience and behave the same as changing to the sub-directories and running the commands there
-
-- `npm run start-4` - Run the Webpack 4 example
-- `npm run build-4` - Build the Webpack 4 example
-- `npm run start-5` - Run the Webpack 5 example
-- `npm run build-5` - Build the Webpack 5 example
+VALENTIN Paul ; 
+HERMAN Nicolas ; 
+THIBAUDON Arthur
 
 ---
 
-Developed by the Cesium team.
+**Note** : Ce projet a été développé dans le cadre d'un Master 2 en géomatique.

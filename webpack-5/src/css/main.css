@@ -29,6 +29,32 @@ body,
   padding-bottom: 8px;
 }
 
+.legend-subtitle {
+  margin: 12px 0 8px 0;
+  font-size: 14px;
+  color: #333;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 4px;
+}
+
+.legend-toggle {
+  margin: 0 0 12px 0;
+  padding: 8px;
+  background-color: #f6f6f6;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  display: grid;
+  gap: 6px;
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #333;
+}
+
 .legend-item {
   display: flex;
   align-items: center;
@@ -41,6 +67,23 @@ body,
   border-radius: 3px;
   margin-right: 10px;
   border: 1px solid #ccc;
+}
+
+.legend-line {
+  width: 22px;
+  height: 4px;
+  border-radius: 2px;
+  margin-right: 10px;
+  display: inline-block;
+}
+
+.legend-line-urbain {
+  background: linear-gradient(90deg, #f1c40f, #f9e79f);
+  box-shadow: 0 0 6px rgba(241, 196, 15, 0.8);
+}
+
+.legend-line-non-urbain {
+  background-color: #f1c40f;
 }
 
 .legend-label {

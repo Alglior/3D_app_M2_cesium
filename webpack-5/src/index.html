@@ -7,6 +7,20 @@
     <div id="cesiumContainer"></div>
     <div id="legend">
       <h3>Légende - Types de bâtiments</h3>
+      <div class="legend-toggle">
+        <label class="toggle-label" for="toggleRoutes">
+          <input type="checkbox" id="toggleRoutes" />
+          Afficher les routes
+        </label>
+        <label class="toggle-label" for="toggleRoutesUrbain">
+          <input type="checkbox" id="toggleRoutesUrbain" />
+          Style URBAIN (glow)
+        </label>
+        <label class="toggle-label" for="toggleRoutesNature">
+          <input type="checkbox" id="toggleRoutesNature" />
+          Couleurs NATURE
+        </label>
+      </div>
       <div class="legend-item">
         <span class="legend-color" style="background-color: #3498db;"></span>
         <span class="legend-label">Résidentiel</span>
@@ -38,6 +52,44 @@
       <div class="legend-item">
         <span class="legend-color" style="background-color: #bdc3c7;"></span>
         <span class="legend-label">Non défini</span>
+      </div>
+      <h4 class="legend-subtitle">Routes - URBAIN</h4>
+      <div class="legend-item">
+        <span class="legend-line legend-line-urbain"></span>
+        <span class="legend-label">OUI (ligne lumineuse)</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-line legend-line-non-urbain"></span>
+        <span class="legend-label">NON (ligne simple)</span>
+      </div>
+      <h4 class="legend-subtitle">Routes - NATURE</h4>
+      <div class="legend-item">
+        <span class="legend-color" style="background-color: #27ae60;"></span>
+        <span class="legend-label">Chemin</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-color" style="background-color: #8e44ad;"></span>
+        <span class="legend-label">Escalier</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-color" style="background-color: #e67e22;"></span>
+        <span class="legend-label">Rond-point</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-color" style="background-color: #95a5a6;"></span>
+        <span class="legend-label">Route empierrée</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-color" style="background-color: #3498db;"></span>
+        <span class="legend-label">Route à 1 chaussée</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-color" style="background-color: #e74c3c;"></span>
+        <span class="legend-label">Route à 2 chaussées</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-color" style="background-color: #16a085;"></span>
+        <span class="legend-label">Sentier</span>
       </div>
     </div>
   </body>
