@@ -36,11 +36,11 @@ Un filtre spatial permet d'associer les surfaces de bâtiments avec les données
 - Séparer les features acceptées, rejetées et en attente
 
 #### 4. **FeatureJoiner**
-Cette étape cruciale joint les géométries 3D avec les attributs sémantiques des bâtiments, notamment :
+Cette étape cruciale joint les géométries 3D avec les attributs sémantiques des bâtiments provenants de la BD TOPO de l'IGN, notamment :
 - **USAGE1** : Usage principal du bâtiment (Résidentiel, Commercial, Industriel, etc.)
 - Autres attributs métier
 
-Le joineur produit :
+Le script produit :
 - **Joined** : Bâtiments avec attributs associés (69296 features)
 - **Unjoined** : Entités non appariées (5365 features)
 
@@ -48,14 +48,14 @@ Le joineur produit :
 Suppression des apparences d'origine des modèles CityGML pour permettre une stylisation personnalisée basée sur les attributs.
 
 #### 6. **Offsetter**
-Ajustement de l'altitude des bâtiments si nécessaire pour garantir un positionnement correct sur le terrain.
+Ajustement de l'altitude des bâtiments pour garantir un positionnement correct sur le terrain.
 
 #### 7. **Export en 3D Tiles**
 Les données sont finalement exportées au format Cesium 3D Tiles (65661 features) pour une visualisation optimisée dans CesiumJS.
 
 ### Workflow QGIS - Traitement des Routes
 
-La couche de routes provient de la BD TOPO : **GNF_BDTOPO_3-5_SHP_LAMB93_D069-ED2025-12-15**.
+La couche de routes provient de la BD TOPO.
 
 Le traitement a ete realise dans QGIS avec les etapes suivantes :
 
@@ -65,7 +65,7 @@ Le traitement a ete realise dans QGIS avec les etapes suivantes :
 
 ### Workflow QGIS - Traitement de la Végétation
 
-La couche de végétation provient également de la BD TOPO : **GNF_BDTOPO_3-5_SHP_LAMB93_D069-ED2025-12-15**.
+La couche de végétation provient également de la BD TOPO.
 
 Le traitement suit les mêmes étapes que pour les routes :
 
@@ -94,14 +94,14 @@ Nous avons choisi de représenter les bâtiments avec une **colorisation thémat
    - Le grand public
 
 4. **Différenciation Visuelle** : Chaque usage dispose d'une couleur distinctive :
-   - 🔵 **Résidentiel** (#3498db) - Bleu : zones d'habitation
-   - 🔴 **Industriel** (#e74c3c) - Rouge : sites de production
-   - 🟠 **Commercial** (#f39c12) - Orange : commerces et services
-   - 🟢 **Agricole** (#27ae60) - Vert : bâtiments agricoles
-   - 🟣 **Religieux** (#9b59b6) - Violet : édifices religieux
-   - 🔷 **Sportif** (#1abc9c) - Turquoise : équipements sportifs
-   - ⚪ **Annexe** (#95a5a6) - Gris : dépendances
-   - ⚫ **Non défini** (#bdc3c7) - Gris clair : usage inconnu
+   - **Résidentiel** (#3498db) - Bleu : zones d'habitation
+   - **Industriel** (#e74c3c) - Rouge : sites de production
+   - **Commercial** (#f39c12) - Orange : commerces et services
+   - **Agricole** (#27ae60) - Vert : bâtiments agricoles
+   - **Religieux** (#9b59b6) - Violet : édifices religieux
+   - **Sportif** (#1abc9c) - Turquoise : équipements sportifs
+   - **Annexe** (#95a5a6) - Gris : dépendances
+   - **Non défini** (#bdc3c7) - Gris clair : usage inconnu
 
 ### Code de Stylisation (Cesium3DTileStyle)
 
@@ -138,13 +138,13 @@ Les routes sont représentées avec une **colorisation thématique basée sur l'
 2. **Navigation** : Facilite la compréhension de l'accessibilité et de la structure du réseau viaire.
 
 3. **Différenciation Visuelle** : Chaque type de route dispose d'une couleur distinctive :
-   - 🟢 **Chemin** (#27ae60) - Vert : chemins non revêtus
-   - 🟣 **Escalier** (#8e44ad) - Violet : escaliers publics
-   - 🟠 **Rond-point** (#e67e22) - Orange : giratoires
-   - ⚪ **Route empierrée** (#95a5a6) - Gris : routes empierrées
-   - 🔵 **Route à 1 chaussée** (#3498db) - Bleu : routes simples
-   - 🔴 **Route à 2 chaussées** (#e74c3c) - Rouge : routes à chaussées séparées
-   - 🔷 **Sentier** (#16a085) - Turquoise : sentiers piétons
+   - **Chemin** (#27ae60) - Vert : chemins non revêtus
+   - **Escalier** (#8e44ad) - Violet : escaliers publics
+   - **Rond-point** (#e67e22) - Orange : giratoires
+   - **Route empierrée** (#95a5a6) - Gris : routes empierrées
+   - **Route à 1 chaussée** (#3498db) - Bleu : routes simples
+   - **Route à 2 chaussées** (#e74c3c) - Rouge : routes à chaussées séparées
+   - **Sentier** (#16a085) - Turquoise : sentiers piétons
 
 ### Caractéristiques Techniques
 
@@ -165,10 +165,10 @@ Les zones de végétation sont représentées avec une **colorisation thématiqu
 2. **Analyse Environnementale** : Identification des différents types de couverture végétale.
 
 3. **Différenciation Visuelle** : Chaque type de végétation dispose d'une couleur distinctive :
-   - 🟢 **Bois** (#27ae60) - Vert : boisements
-   - 🔷 **Haie** (#16a085) - Turquoise : haies
-   - 🌲 **Forêt fermée de feuillus** (#1e8449) - Vert foncé : forêts denses
-   - 🟩 **Lande ligneuse** (#82e0aa) - Vert clair : landes arbustives
+   - **Bois** (#27ae60) - Vert : boisements
+   - **Haie** (#16a085) - Turquoise : haies
+   - **Forêt fermée de feuillus** (#1e8449) - Vert foncé : forêts denses
+   - **Lande ligneuse** (#82e0aa) - Vert clair : landes arbustives
 
 ### Caractéristiques Techniques
 
@@ -242,7 +242,7 @@ La légende est positionnée à gauche de l'écran avec un défilement vertical 
 ## Données Source
 
 - Format d'origine : CityGML
-- Système de coordonnées : [À préciser]
+- Système de coordonnées : 4326
 - Couverture : Commune de Francheville
 - Attributs : USAGE1, géométries 3D (toits, murs, sols)
 
@@ -251,7 +251,3 @@ La légende est positionnée à gauche de l'écran avec un défilement vertical 
 VALENTIN Paul ; 
 HERMAN Nicolas ; 
 THIBAUDON Arthur
-
----
-
-**Note** : Ce projet a été développé dans le cadre d'un Master 2 en géomatique.
