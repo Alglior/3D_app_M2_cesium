@@ -58,7 +58,7 @@ const applyRouteStyles = (dataSource, options) => {
     return;
   }
 
-  const { useNatureColors, useUrbainStyle } = options;
+  const { useNatureColors } = options;
 
   dataSource.entities.values.forEach((entity) => {
     if (!entity.polyline) {
@@ -78,21 +78,12 @@ const applyRouteStyles = (dataSource, options) => {
     }
 
     const natureValue = getEntityValue(entity, "NATURE");
-    const urbainValue = getEntityValue(entity, "URBAIN");
     const natureColor = routeNatureColors[natureValue] || defaultRouteColor;
     const selectedColor = useNatureColors ? natureColor : defaultRouteColor;
     const color = Color.fromCssColorString(selectedColor);
 
-    if (useUrbainStyle && urbainValue === "OUI") {
-      entity.polyline.width = 3;
-      entity.polyline.material = new PolylineGlowMaterialProperty({
-        color,
-        glowPower: 0.15
-      });
-    } else {
-      entity.polyline.width = 2;
-      entity.polyline.material = color;
-    }
+    entity.polyline.width = 2;
+    entity.polyline.material = color;
     entity.polyline.clampToGround = true;
   });
 };
@@ -137,14 +128,12 @@ try {
   viewer.dataSources.add(routes);
 
   const routeStyleOptions = {
-    useNatureColors: true,
-    useUrbainStyle: true
+    useNatureColors: true
   };
 
   applyRouteStyles(routes, routeStyleOptions);
 
   const toggleRoutes = document.getElementById("toggleRoutes");
-  const toggleRoutesUrbain = document.getElementById("toggleRoutesUrbain");
   const toggleRoutesNature = document.getElementById("toggleRoutesNature");
   if (toggleRoutes) {
     toggleRoutes.checked = true;
@@ -153,19 +142,11 @@ try {
     });
   }
 
-  if (toggleRoutesUrbain) {
-    toggleRoutesUrbain.checked = routeStyleOptions.useUrbainStyle;
-    toggleRoutesUrbain.addEventListener("change", (event) => {
-      routeStyleOptions.useUrbainStyle = event.target.checked;
-      applyRouteStyles(routes, routeStyleOptions);
-    });
-  }
-
   if (toggleRoutesNature) {
     toggleRoutesNature.checked = routeStyleOptions.useNatureColors;
     toggleRoutesNature.addEventListener("change", (event) => {
       routeStyleOptions.useNatureColors = event.target.checked;
-      applyRouteStyles(routes, routeStyleOptions);
+      routes.show = event.target.checked;
     });
   }
 } catch (error) {
