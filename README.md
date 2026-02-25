@@ -73,6 +73,23 @@ Le traitement suit les mêmes étapes que pour les routes :
 2. **Intersection** avec les limites communales de Francheville.
 3. **Export** du resultat en **GeoJSON** en 4326 pour integration dans CesiumJS.
 
+### Traitement des Limites Communales
+
+La couche des limites communales de Francheville provient de la BD TOPO (COMMUNE).
+
+Le traitement réalisé :
+
+1. **Sélection de la commune** de Francheville (INSEE: 69089) depuis la couche COMMUNE de la BD TOPO.
+2. **Export** en **GeoJSON** en 4326 pour utilisation dans l'application.
+
+Cette couche contient les informations administratives suivantes :
+- **Code INSEE** : 69089
+- **Population** : 15 664 habitants
+- **Superficie cadastrale** : 820 hectares
+- **Code postal** : 69340
+- **SIREN** : 216900894
+
+
 ## Représentation du Bâti sur la Carte
 
 ### Choix de Colorisation
@@ -175,6 +192,24 @@ Les zones de végétation sont représentées avec une **colorisation thématiqu
 - **Transparence** : 40% (alpha 0.4) pour ne pas masquer le bâti
 - **Contour** : Oui, avec la même couleur mais plus opaque (alpha 0.8)
 - **clampToGround** : Les polygones s'adaptent au relief du terrain
+
+## Représentation des Limites Communales
+
+La limite communale de Francheville peut être utilisée comme couche de référence géographique pour :
+
+1. **Délimitation du Territoire** : Visualisation claire de l'emprise communale
+2. **Contexte Géographique** : Référence pour situer les différentes couches de données
+3. **Zone d'Étude** : Utilisée pour l'intersection spatiale lors du traitement des données SIG
+
+### Informations de la Commune
+
+- **Nom** : Francheville
+- **Code INSEE** : 69089
+- **Population** : 15 664 habitants (recensement INSEE)
+- **Superficie** : 820 hectares
+- **Code postal** : 69340
+- **Département** : Rhône (69)
+- **Région** : Auvergne-Rhône-Alpes (84)
 
 ## Installation
 

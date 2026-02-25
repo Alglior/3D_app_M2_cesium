@@ -10,7 +10,8 @@ import {
   Color,
   PolylinePipeline,
   ArcType,
-  PolylineGlowMaterialProperty
+  PolylineGlowMaterialProperty,
+  HeightReference
 } from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
 import "./css/main.css";
@@ -39,10 +40,15 @@ const vegetationUrl = new URL(
   "output_francheville_batie/bdtopo_zonevegetation2.geojson",
   baseUrl
 ).toString();
+const communeUrl = new URL(
+  "output_francheville_batie/francheville.geojson",
+  baseUrl
+).toString();
 
 let routes;
 let vegetation;
 let tileset;
+let commune;
 const routeNatureColors = {
   "Chemin": "#27ae60",
   "Escalier": "#8e44ad",
@@ -129,10 +135,15 @@ try {
   viewer.zoomTo(tileset);
 
   const toggleBati = document.getElementById("toggleBati");
+  const legendBati = document.getElementById("legend-bati");
   if (toggleBati) {
     toggleBati.checked = true;
     toggleBati.addEventListener("change", (event) => {
       tileset.show = event.target.checked;
+      // Afficher/masquer la section de légende correspondante
+      if (legendBati) {
+        legendBati.classList.toggle("hidden", !event.target.checked);
+      }
     });
   }
 
@@ -157,10 +168,15 @@ try {
 
   const toggleRoutes = document.getElementById("toggleRoutes");
   const toggleRoutesNature = document.getElementById("toggleRoutesNature");
+  const legendRoutes = document.getElementById("legend-routes");
   if (toggleRoutes) {
     toggleRoutes.checked = true;
     toggleRoutes.addEventListener("change", (event) => {
       routes.show = event.target.checked;
+      // Afficher/masquer la section de légende correspondante
+      if (legendRoutes) {
+        legendRoutes.classList.toggle("hidden", !event.target.checked);
+      }
     });
   }
 
@@ -198,15 +214,75 @@ try {
   });
 
   const toggleVegetation = document.getElementById("toggleVegetation");
+  const legendVegetation = document.getElementById("legend-vegetation");
   if (toggleVegetation) {
     toggleVegetation.checked = true;
     toggleVegetation.addEventListener("change", (event) => {
       vegetation.show = event.target.checked;
+      // Afficher/masquer la section de légende correspondante
+      if (legendVegetation) {
+        legendVegetation.classList.toggle("hidden", !event.target.checked);
+      }
     });
   }
 } catch (error) {
   console.log(`Erreur lors du chargement de la végétation: ${error}`);
 }
+
+try {
+  const communeResponse = await fetch(communeUrl);
+  const communeGeojson = await communeResponse.json();
+  commune = await GeoJsonDataSource.load(communeGeojson, {
+    clampToGround: true
+  });
+
+  viewer.dataSources.add(commune);
+
+  commune.entities.values.forEach((entity) => {
+    if (entity.polygon) {
+      // Masquer le polygone et son contour
+      entity.polygon.show = false;
+      
+      // Créer des polylines pour les contours qui suivent le relief
+      const hierarchy = entity.polygon.hierarchy.getValue();
+      if (hierarchy && hierarchy.positions) {
+        const positions = hierarchy.positions;
+        
+        // Créer une polyline pour le contour externe
+        commune.entities.add({
+          polyline: {
+            positions: [...positions, positions[0]], // Fermer le contour
+            width: 3,
+            material: Color.BLACK,
+            clampToGround: true
+          }
+        });
+      }
+    }
+  });
+
+  const toggleCommune = document.getElementById("toggleCommune");
+  if (toggleCommune) {
+    toggleCommune.checked = true;
+    toggleCommune.addEventListener("change", (event) => {
+      commune.show = event.target.checked;
+    });
+  }
+} catch (error) {
+  console.log(`Erreur lors du chargement de la commune: ${error}`);
+}
+
+// Gestion du bouton de collapse du panel de contrôle
+const toggleLayerPanelBtn = document.getElementById("toggleLayerPanel");
+const layerControlPanel = document.getElementById("layerControl");
+
+if (toggleLayerPanelBtn && layerControlPanel) {
+  toggleLayerPanelBtn.addEventListener("click", () => {
+    layerControlPanel.classList.toggle("collapsed");
+    toggleLayerPanelBtn.textContent = layerControlPanel.classList.contains("collapsed") ? "+" : "−";
+  });
+}
+
 // // Fly the camera to San Francisco at the given longitude, latitude, and height.
 // viewer.camera.flyTo({
 //   destination: Cartesian3.fromDegrees(-122.4175, 37.655, 400),
