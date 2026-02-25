@@ -5,59 +5,85 @@
   </head>
   <body>
     <div id="cesiumContainer"></div>
-    <div id="legend">
-      <h3>Légende - Types de bâtiments</h3>
+    
+    <!-- Panel de contrôle des layers en bas à droite -->
+    <div id="layerControl">
+      <div class="panel-header">
+        <h3>Couches</h3>
+        <button id="toggleLayerPanel" class="collapse-btn" title="Réduire/Agrandir">−</button>
+      </div>
+      <div id="layerControlContent">
       <div class="legend-toggle">
         <label class="toggle-label" for="toggleBati">
           <input type="checkbox" id="toggleBati" />
-          Afficher le bâti 3D
+          Bâti 3D
         </label>
       </div>
       <div class="legend-toggle">
         <label class="toggle-label" for="toggleRoutes">
           <input type="checkbox" id="toggleRoutes" />
-          Afficher les routes
+          Routes
         </label>
       </div>
       <div class="legend-toggle">
         <label class="toggle-label" for="toggleVegetation">
           <input type="checkbox" id="toggleVegetation" />
-          Afficher la végétation
+          Végétation
         </label>
       </div>
-      <div class="legend-item">
-        <span class="legend-color" style="background-color: #3498db;"></span>
-        <span class="legend-label">Résidentiel</span>
+      <div class="legend-toggle">
+        <label class="toggle-label" for="toggleCommune">
+          <input type="checkbox" id="toggleCommune" />
+          Limites communales
+        </label>
       </div>
-      <div class="legend-item">
-        <span class="legend-color" style="background-color: #e74c3c;"></span>
-        <span class="legend-label">Industriel</span>
       </div>
-      <div class="legend-item">
-        <span class="legend-color" style="background-color: #f39c12;"></span>
-        <span class="legend-label">Commercial</span>
+    </div>
+    
+    <!-- Légende des couleurs en haut à gauche -->
+    <div id="legend">
+      <h3>Légende</h3>
+      
+      <!-- Section Bâtiments -->
+      <div id="legend-bati" class="legend-section">
+        <h4 class="legend-subtitle">Types de bâtiments</h4>
+        <div class="legend-item">
+          <span class="legend-color" style="background-color: #3498db;"></span>
+          <span class="legend-label">Résidentiel</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-color" style="background-color: #e74c3c;"></span>
+          <span class="legend-label">Industriel</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-color" style="background-color: #f39c12;"></span>
+          <span class="legend-label">Commercial</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-color" style="background-color: #27ae60;"></span>
+          <span class="legend-label">Agricole</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-color" style="background-color: #9b59b6;"></span>
+          <span class="legend-label">Religieux</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-color" style="background-color: #1abc9c;"></span>
+          <span class="legend-label">Sportif</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-color" style="background-color: #95a5a6;"></span>
+          <span class="legend-label">Annexe</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-color" style="background-color: #bdc3c7;"></span>
+          <span class="legend-label">Non défini</span>
+        </div>
       </div>
-      <div class="legend-item">
-        <span class="legend-color" style="background-color: #27ae60;"></span>
-        <span class="legend-label">Agricole</span>
-      </div>
-      <div class="legend-item">
-        <span class="legend-color" style="background-color: #9b59b6;"></span>
-        <span class="legend-label">Religieux</span>
-      </div>
-      <div class="legend-item">
-        <span class="legend-color" style="background-color: #1abc9c;"></span>
-        <span class="legend-label">Sportif</span>
-      </div>
-      <div class="legend-item">
-        <span class="legend-color" style="background-color: #95a5a6;"></span>
-        <span class="legend-label">Annexe</span>
-      </div>
-      <div class="legend-item">
-        <span class="legend-color" style="background-color: #bdc3c7;"></span>
-        <span class="legend-label">Non défini</span>
-      </div>
-      <h4 class="legend-subtitle">Routes - NATURE</h4>
+      
+      <!-- Section Routes -->
+      <div id="legend-routes" class="legend-section">
+        <h4 class="legend-subtitle">Routes - NATURE</h4>
       <div class="legend-item">
         <span class="legend-color" style="background-color: #27ae60;"></span>
         <span class="legend-label">Chemin</span>
@@ -82,11 +108,15 @@
         <span class="legend-color" style="background-color: #e74c3c;"></span>
         <span class="legend-label">Route à 2 chaussées</span>
       </div>
-      <div class="legend-item">
-        <span class="legend-color" style="background-color: #16a085;"></span>
-        <span class="legend-label">Sentier</span>
+        <div class="legend-item">
+          <span class="legend-color" style="background-color: #16a085;"></span>
+          <span class="legend-label">Sentier</span>
+        </div>
       </div>
-      <h4 class="legend-subtitle">Végétation - NATURE</h4>
+      
+      <!-- Section Végétation -->
+      <div id="legend-vegetation" class="legend-section">
+        <h4 class="legend-subtitle">Végétation - NATURE</h4>
       <div class="legend-item">
         <span class="legend-color" style="background-color: #27ae60;"></span>
         <span class="legend-label">Bois</span>
@@ -99,9 +129,10 @@
         <span class="legend-color" style="background-color: #1e8449;"></span>
         <span class="legend-label">Forêt fermée de feuillus</span>
       </div>
-      <div class="legend-item">
-        <span class="legend-color" style="background-color: #82e0aa;"></span>
-        <span class="legend-label">Lande ligneuse</span>
+        <div class="legend-item">
+          <span class="legend-color" style="background-color: #82e0aa;"></span>
+          <span class="legend-label">Lande ligneuse</span>
+        </div>
       </div>
     </div>
   </body>
