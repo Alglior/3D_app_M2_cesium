@@ -282,12 +282,3 @@ if (toggleLayerPanelBtn && layerControlPanel) {
     toggleLayerPanelBtn.textContent = layerControlPanel.classList.contains("collapsed") ? "+" : "−";
   });
 }
-
-// // Fly the camera to San Francisco at the given longitude, latitude, and height.
-// viewer.camera.flyTo({
-//   destination: Cartesian3.fromDegrees(-122.4175, 37.655, 400),
-//   orientation: {
-//     heading: 0.0,
-//     pitch: Math.toRadians(-15.0),
-//   },
-// });
