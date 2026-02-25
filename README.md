@@ -63,6 +63,16 @@ Le traitement a ete realise dans QGIS avec les etapes suivantes :
 2. **Intersection** avec les limites communales de Francheville.
 3. **Export** du resultat en **GeoJSON** en 4326 pour integration dans CesiumJS.
 
+### Workflow QGIS - Traitement de la Végétation
+
+La couche de végétation provient également de la BD TOPO : **GNF_BDTOPO_3-5_SHP_LAMB93_D069-ED2025-12-15**.
+
+Le traitement suit les mêmes étapes que pour les routes :
+
+1. **Selection de la couche zones de végétation** depuis la BD TOPO.
+2. **Intersection** avec les limites communales de Francheville.
+3. **Export** du resultat en **GeoJSON** en 4326 pour integration dans CesiumJS.
+
 ## Représentation du Bâti sur la Carte
 
 ### Choix de Colorisation
@@ -115,6 +125,57 @@ tileset.style = new Cesium3DTileStyle({
 
 Cette approche par conditions permet une grande flexibilité et peut être facilement adaptée pour d'autres critères de visualisation (hauteur, année de construction, état du bâti, etc.).
 
+## Représentation des Routes sur la Carte
+
+### Choix de Colorisation
+
+Les routes sont représentées avec une **colorisation thématique basée sur l'attribut NATURE** de la BD TOPO. Cette visualisation permet de distinguer les différents types de voies.
+
+#### Pourquoi cette représentation ?
+
+1. **Hiérarchie des Voies** : Les couleurs différenciées permettent d'identifier rapidement la hiérarchie du réseau routier.
+
+2. **Navigation** : Facilite la compréhension de l'accessibilité et de la structure du réseau viaire.
+
+3. **Différenciation Visuelle** : Chaque type de route dispose d'une couleur distinctive :
+   - 🟢 **Chemin** (#27ae60) - Vert : chemins non revêtus
+   - 🟣 **Escalier** (#8e44ad) - Violet : escaliers publics
+   - 🟠 **Rond-point** (#e67e22) - Orange : giratoires
+   - ⚪ **Route empierrée** (#95a5a6) - Gris : routes empierrées
+   - 🔵 **Route à 1 chaussée** (#3498db) - Bleu : routes simples
+   - 🔴 **Route à 2 chaussées** (#e74c3c) - Rouge : routes à chaussées séparées
+   - 🔷 **Sentier** (#16a085) - Turquoise : sentiers piétons
+
+### Caractéristiques Techniques
+
+- **Largeur** : 2 pixels
+- **clampToGround** : Les routes s'adaptent au relief du terrain
+- **Densification** : Les polylignes sont densifiées pour mieux épouser le terrain (granularité 0.0005 radians)
+
+## Représentation de la Végétation sur la Carte
+
+### Choix de Colorisation
+
+Les zones de végétation sont représentées avec une **colorisation thématique basée sur l'attribut NATURE** de la BD TOPO. Les polygones sont semi-transparents pour ne pas masquer le bâti.
+
+#### Pourquoi cette représentation ?
+
+1. **Patrimoine Naturel** : Visualisation des espaces verts et boisés de la commune.
+
+2. **Analyse Environnementale** : Identification des différents types de couverture végétale.
+
+3. **Différenciation Visuelle** : Chaque type de végétation dispose d'une couleur distinctive :
+   - 🟢 **Bois** (#27ae60) - Vert : boisements
+   - 🔷 **Haie** (#16a085) - Turquoise : haies
+   - 🌲 **Forêt fermée de feuillus** (#1e8449) - Vert foncé : forêts denses
+   - 🟩 **Lande ligneuse** (#82e0aa) - Vert clair : landes arbustives
+
+### Caractéristiques Techniques
+
+- **Transparence** : 40% (alpha 0.4) pour ne pas masquer le bâti
+- **Contour** : Oui, avec la même couleur mais plus opaque (alpha 0.8)
+- **clampToGround** : Les polygones s'adaptent au relief du terrain
+
 ## Installation
 
 ### Prérequis
@@ -147,6 +208,7 @@ webpack-5/
 │   └── output_francheville_batie/         # Tuiles 3D du bâti
 │       ├── tileset.json                   # Index des tuiles
 │       ├── routes_bdtopo_francheville2.geojson  # Routes (BD TOPO, QGIS -> GeoJSON)
+│       ├── bdtopo_zonevegetation2.geojson       # Végétation (BD TOPO, QGIS -> GeoJSON)
 │       └── data/                          # Fichiers .b3dm
 ├── src/
 │   ├── index.html                         # Page HTML principale
@@ -156,6 +218,19 @@ webpack-5/
 ├── package.json                           # Dépendances npm
 └── webpack.config.js                      # Configuration Webpack
 ```
+
+## Fonctionnalités Interactives
+
+### Légende Interactive
+
+L'application propose une légende interactive permettant de contrôler l'affichage des différentes couches :
+
+- **Toggle Bâti 3D** : Afficher/masquer le modèle 3D des bâtiments
+- **Toggle Routes** : Afficher/masquer la couche des routes
+- **Toggle Nature Routes** : Masque également les routes lorsque désactivé
+- **Toggle Végétation** : Afficher/masquer les zones de végétation
+
+La légende est positionnée à gauche de l'écran avec un défilement vertical pour s'adapter à toutes les tailles d'écran.
 
 ## Technologies Utilisées
 

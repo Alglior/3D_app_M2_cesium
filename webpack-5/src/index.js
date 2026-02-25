@@ -35,8 +35,14 @@ const routesUrl = new URL(
   "output_francheville_batie/routes_bdtopo_francheville2.geojson",
   baseUrl
 ).toString();
+const vegetationUrl = new URL(
+  "output_francheville_batie/bdtopo_zonevegetation2.geojson",
+  baseUrl
+).toString();
 
 let routes;
+let vegetation;
+let tileset;
 const routeNatureColors = {
   "Chemin": "#27ae60",
   "Escalier": "#8e44ad",
@@ -47,6 +53,14 @@ const routeNatureColors = {
   "Sentier": "#16a085"
 };
 const defaultRouteColor = "#f1c40f";
+
+const vegetationNatureColors = {
+  "Bois": "#27ae60",
+  "Haie": "#16a085",
+  "Forêt fermée de feuillus": "#1e8449",
+  "Lande ligneuse": "#82e0aa"
+};
+const defaultVegetationColor = "#27ae60";
 
 const getEntityValue = (entity, key) => {
   const value = entity?.properties?.[key]?.getValue?.(viewer.clock.currentTime);
@@ -89,7 +103,7 @@ const applyRouteStyles = (dataSource, options) => {
 };
 
 try {
-  const tileset = await Cesium3DTileset.fromUrl(tilesetUrl);
+  tileset = await Cesium3DTileset.fromUrl(tilesetUrl);
   
   viewer.scene.primitives.add(tileset);
 
@@ -113,6 +127,14 @@ try {
 
   // Pour zoomer automatiquement sur ton modèle une fois chargé
   viewer.zoomTo(tileset);
+
+  const toggleBati = document.getElementById("toggleBati");
+  if (toggleBati) {
+    toggleBati.checked = true;
+    toggleBati.addEventListener("change", (event) => {
+      tileset.show = event.target.checked;
+    });
+  }
 
 } catch (error) {
   console.log(`Erreur lors du chargement du tileset: ${error}`);
@@ -151,6 +173,39 @@ try {
   }
 } catch (error) {
   console.log(`Erreur lors du chargement des routes: ${error}`);
+}
+
+try {
+  const vegetationResponse = await fetch(vegetationUrl);
+  const vegetationGeojson = await vegetationResponse.json();
+  vegetation = await GeoJsonDataSource.load(vegetationGeojson, {
+    clampToGround: true
+  });
+
+  viewer.dataSources.add(vegetation);
+
+  vegetation.entities.values.forEach((entity) => {
+    if (entity.polygon) {
+      const natureValue = getEntityValue(entity, "NATURE");
+      const vegetationColor = vegetationNatureColors[natureValue] || defaultVegetationColor;
+      const color = Color.fromCssColorString(vegetationColor);
+      
+      entity.polygon.material = color.withAlpha(0.4);
+      entity.polygon.outline = true;
+      entity.polygon.outlineColor = color.withAlpha(0.8);
+      entity.polygon.outlineWidth = 1;
+    }
+  });
+
+  const toggleVegetation = document.getElementById("toggleVegetation");
+  if (toggleVegetation) {
+    toggleVegetation.checked = true;
+    toggleVegetation.addEventListener("change", (event) => {
+      vegetation.show = event.target.checked;
+    });
+  }
+} catch (error) {
+  console.log(`Erreur lors du chargement de la végétation: ${error}`);
 }
 // // Fly the camera to San Francisco at the given longitude, latitude, and height.
 // viewer.camera.flyTo({
